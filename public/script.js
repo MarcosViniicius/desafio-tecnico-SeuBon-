@@ -43,19 +43,22 @@ async function carregarTarefas(endpoint = '/api/tarefas') {
         return;
     }
 
-    tbody.innerHTML = tarefas.map(t => `
-        <tr>
+    tbody.innerHTML = tarefas.map(t => {
+      const status = t.status || 'pendente';
+      const statusBtn = status === 'concluida' ? '✅ Concluída' : '⏳ Pendente';
+      return `<tr>
         <td>${t.nomeTarefa}</td>
         <td>${t.descricaoTarefa}</td>
         <td>${t.prazoTarefa}</td>
         <td>${prioridadeMap[t.prioridadeTarefa] || 'N/A'}</td>
         <td>${t.funcionario_id ? funcionariosMap[t.funcionario_id] || 'Desconhecido' : 'N/A'}</td>
+        <td><button class="btn-small" onclick="toggleStatusTarefa(${t.tarefa_id}, '${status}')">${statusBtn}</button></td>
         <td>
             <button class="btn-small" onclick="abrirModalEditarTarefa(${t.tarefa_id}, '${t.nomeTarefa}', '${t.descricaoTarefa}', '${t.prazoTarefa}', ${t.prioridadeTarefa}, ${t.funcionario_id || 'null'})">Editar</button>
             <button class="btn-small btn-danger" onclick="deletarTarefa(${t.tarefa_id})">Deletar</button>
         </td>
-        </tr>
-    `).join('');
+        </tr>`;
+    }).join('');
     } catch (error) {
     console.error('Erro:', error);
     }
@@ -277,6 +280,23 @@ async function carregarFuncionariosParaSelect() {
     }
 }
 
+async function toggleStatusTarefa(id, statusAtual) {
+  const novoStatus = statusAtual === 'pendente' ? 'concluida' : 'pendente';
+  try {
+    const response = await fetch(`/api/tarefas/${id}/status`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status: novoStatus })
+    });
+    if (response.ok) {
+      carregarTarefas();
+    }
+  } catch (error) {
+    console.error('Erro:', error);
+  }
+}
+
 carregarFuncionarios();
 carregarTarefas();
 carregarFuncionariosParaSelect();
+carregarKPIs();

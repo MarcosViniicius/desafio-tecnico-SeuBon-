@@ -18,6 +18,7 @@ import {
   editarTarefa,
   deletarTarefa,
   atribuirResponsavel,
+  atualizarStatusTarefa,
   listarTarefasEmAndamento,
   listarTarefasConcluidas,
   listarTarefasAtrasadas,
@@ -134,6 +135,12 @@ const routes: Record<string, Handler> = {
   'PATCH /api/tarefas/:id/responsavel': (body, params) => {
     const { funcionario_id } = JSON.parse(body);
     atribuirResponsavel(parseInt(params.id || '', 10), funcionario_id || null);
+    return { status: 200, data: { success: true } };
+  },
+
+  'PATCH /api/tarefas/:id/status': (body, params) => {
+    const { status: statusValue } = JSON.parse(body);
+    atualizarStatusTarefa(parseInt(params.id || '', 10), statusValue);
     return { status: 200, data: { success: true } };
   },
 

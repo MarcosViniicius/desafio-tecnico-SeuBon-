@@ -71,3 +71,9 @@ export function listarTarefasProximasVencimento(): Tarefa[] {
     return stmt.all() as Tarefa[];
 }
 
+// * Atualizar status da tarefa
+export function atualizarStatusTarefa(id: number, status: string): void {
+    const stmt = db.prepare("UPDATE tarefas SET status = ? WHERE tarefa_id = ?");
+    stmt.run(status, id);
+}
+

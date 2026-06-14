@@ -17,6 +17,7 @@ db.exec(`
     prazoTarefa TEXT NOT NULL,
     prioridadeTarefa INTEGER NOT NULL,
     funcionario_id INTEGER,
+    status TEXT DEFAULT 'pendente',
     FOREIGN KEY (funcionario_id) REFERENCES funcionarios(funcionario_id) ON DELETE SET NULL
   );
 `);
