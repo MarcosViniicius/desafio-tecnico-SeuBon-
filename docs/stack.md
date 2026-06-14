@@ -1,4 +1,0 @@
-typescript
-html
-css
-sqlite
