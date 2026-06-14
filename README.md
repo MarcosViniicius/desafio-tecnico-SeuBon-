@@ -18,7 +18,7 @@ Implementamos Kanban porque:
 - **Funciona bem** para times pequenos (10 pessoas)
 - **Status claros**: A Fazer, Em Andamento, Concluído, Atrasado
 
-## Arquitetura: Simples e Direto
+## Arquitetura: API Completa + Frontend
 
 ```
 ┌────────────────────────────────┐
@@ -28,9 +28,8 @@ Implementamos Kanban porque:
 └──────────────┬─────────────────┘
                │
        ┌───────▼────────────────┐
-       │  API Simples           │
-       │  /api/funcionarios     │
-       │  /api/tarefas          │
+       │  25 API Endpoints      │
+       │  (CRUD + Queries)      │
        └───────┬────────────────┘
                │
        ┌───────▼────────────────┐
@@ -52,12 +51,13 @@ src/
   database/
     db.ts              # Inicializa SQLite
     types.ts           # Interfaces TypeScript
-    funcionarios.ts    # CRUD de funcionários
-    tarefas.ts         # CRUD de tarefas
-  api.ts               # API endpoints (JSON)
+    funcionarios.ts    # CRUD e queries de funcionários
+    tarefas.ts         # CRUD e queries de tarefas
+  api.ts               # API com 25 endpoints
   index.ts             # Servidor HTTP
 public/
-  index.html           # Frontend com JavaScript
+  index.html           # Frontend com forms e tabelas
+  style.css            # Estilos
 dist/                  # Saída compilada
 database.db            # Banco SQLite
 ```
@@ -86,18 +86,38 @@ Acesse **http://localhost:3000** no navegador.
 npm run dev
 ```
 
-## API Endpoints
+## API Endpoints (25 total)
 
-Endpoints simples que retornam JSON:
+### Funcionários
 
 | Método | Rota | Descrição |
 |--------|------|-----------|
-| GET | `/api/funcionarios` | Lista todos os funcionários |
-| POST | `/api/funcionarios` | Cria novo funcionário |
-| GET | `/api/tarefas` | Lista todas as tarefas |
-| POST | `/api/tarefas` | Cria nova tarefa |
+| GET | `/api/funcionarios` | Listar todos |
+| POST | `/api/funcionarios` | Criar novo |
+| GET | `/api/funcionarios/:id` | Detalhes de um |
+| PUT | `/api/funcionarios/:id` | Editar |
+| PATCH | `/api/funcionarios/:id/status` | Atualizar status (ativo/inativo) |
+| GET | `/api/funcionarios/:id/tarefas` | Tarefas do funcionário |
+| GET | `/api/funcionarios/:id/carga` | Quantidade de tarefas atribuídas |
+| GET | `/api/funcionarios/:id/tarefas/vencidas` | Tarefas com prazo expirado |
+| GET | `/api/funcionarios/:id/tarefas/hoje` | Tarefas vencendo hoje |
 
-### Exemplo de requisição:
+### Tarefas
+
+| Método | Rota | Descrição |
+|--------|------|-----------|
+| GET | `/api/tarefas` | Listar todas |
+| POST | `/api/tarefas` | Criar nova |
+| GET | `/api/tarefas/:id` | Detalhes de uma |
+| PUT | `/api/tarefas/:id` | Editar |
+| DELETE | `/api/tarefas/:id` | Deletar |
+| PATCH | `/api/tarefas/:id/responsavel` | Atribuir funcionário |
+| GET | `/api/tarefas/em-andamento` | Tarefas com prazo no futuro |
+| GET | `/api/tarefas/concluidas` | Tarefas com prazo expirado |
+| GET | `/api/tarefas/atrasadas` | Tarefas atrasadas |
+| GET | `/api/tarefas/proximas` | Próximas 3 dias |
+
+### Exemplo de uso
 
 ```bash
 # Listar funcionários
@@ -106,7 +126,7 @@ curl http://localhost:3000/api/funcionarios
 # Criar funcionário
 curl -X POST http://localhost:3000/api/funcionarios \
   -H "Content-Type: application/json" \
-  -d '{"nome":"João","email":"joao@email.com"}'
+  -d '{"nome":"João Silva","email":"joao@email.com"}'
 
 # Listar tarefas
 curl http://localhost:3000/api/tarefas
@@ -114,25 +134,26 @@ curl http://localhost:3000/api/tarefas
 # Criar tarefa
 curl -X POST http://localhost:3000/api/tarefas \
   -H "Content-Type: application/json" \
-  -d '{"nomeTarefa":"Tarefa 1","descricaoTarefa":"Desc","prazoTarefa":"2025-12-31","prioridadeTarefa":2}'
+  -d '{"nomeTarefa":"Implementar feature X","descricaoTarefa":"Descrição","prazoTarefa":"2025-12-31","prioridadeTarefa":2}'
 ```
 
 ## Frontend
 
 O `public/index.html` contém:
 - Formulários para criar funcionários e tarefas
-- Tabelas que listam dados do banco
+- Tabelas que listam dados em tempo real
 - JavaScript simples que usa `fetch()` para chamar a API
-- Atualização em tempo real (sem reload)
+- Atualização automática após criar registros
+- Estilos básicos em `style.css`
 
 ## Funcionalidades Atuais
 
-- ✅ CRUD de funcionários (criar, listar)
-- ✅ CRUD de tarefas (criar, listar)
-- ✅ API JSON minimalista
-- ✅ Frontend com JavaScript simples
-- ✅ TypeScript no servidor
-- ✅ Sem frameworks complexos
+- ✅ CRUD completo de funcionários e tarefas
+- ✅ 25 endpoints de API bem estruturados
+- ✅ Queries de status e análise de tarefas
+- ✅ Frontend interativo com atualização em tempo real
+- ✅ TypeScript com tipos definidos
+- ✅ Sem frameworks complexos (Node.js nativo)
 
 ## KPIs (Indicadores)
 
@@ -160,30 +181,30 @@ Cada KPI responde a uma decisão que Ricardo precisa tomar:
 
 ## O que foi cortado para o prazo
 
-- Dashboard visual e gráficos
+- Dashboard visual com gráficos
 - Relatórios analíticos (diário/semanal/mensal)
 - Autenticação de usuários
 - Seção "Riscos da Semana"
-- UI estilizada e responsiva (apenas design básico)
+- UI responsiva e design avançado
 - Múltiplas atribuições por tarefa
-- Edição e exclusão completas de registros
-- Filtros avançados e buscas
+- Histórico de mudanças de status
+- Notificações
 
 ## O que faria com mais tempo
 
 1. **Dashboard Gerencial** — cards com os 5 KPIs em tempo real
-2. **Relatórios Analíticos** — gráficos de dados por período (dia/semana/mês)
-3. **Seção "Riscos da Semana"** — alertas de tarefas atrasadas e sobrecarga
-4. **UI Profissional** — CSS bem estruturado, design responsivo
+2. **Relatórios Analíticos** — gráficos de dados por período
+3. **Seção "Riscos da Semana"** — alertas automáticos
+4. **UI Profissional** — design responsivo e polido
 5. **Múltiplas atribuições** — uma tarefa com vários responsáveis
-6. **Autenticação** — apenas Ricardo pode editar tarefas
-7. **Histórico de mudanças** — rastrear status das tarefas
-8. **Notificações** — alertar colaboradores de novas tarefas
-9. **Edição completa** — permitir editar e excluir tarefas e funcionários
-10. **Status de tarefas** — marcar tarefas como "concluída", "em andamento", etc
+6. **Autenticação** — apenas Ricardo pode editar
+7. **Histórico** — rastrear mudanças de status
+8. **Notificações** — alertar colaboradores
+9. **Export** — gerar relatórios em PDF/Excel
+10. **Filtros avançados** — buscar por status, prioridade, etc
 
 ## Scripts
 
-- `npm run dev`: Executa em modo desenvolvimento com recompilação automática
+- `npm run dev`: Executa em modo desenvolvimento (tsx)
 - `npm run build`: Compila TypeScript para `dist/`
 - `npm start`: Executa versão compilada
