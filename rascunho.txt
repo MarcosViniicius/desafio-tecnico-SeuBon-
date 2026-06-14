@@ -1,0 +1,74 @@
+### Problema
+
+* As atividades da equipe ficam espalhadas entre planilhas, papel e WhatsApp.
+* Não existe visibilidade clara do andamento das tarefas.
+* A distribuição de trabalho é desequilibrada.
+* Atrasos são descobertos apenas depois que acontecem.
+* Faltam indicadores para acompanhar a produtividade da equipe.
+
+---
+
+### Solução
+
+Sistema web de gestão de tarefas para centralizar o acompanhamento da equipe.
+
+**Stack:** TypeScript, SQLite, HTML e CSS.
+
+### Funcionalidades
+
+#### Funcionários
+
+* Cadastrar funcionário.
+* Editar funcionário.
+* Deletar funcionário.
+
+#### Tarefas
+
+* Criar tarefa.
+* Editar tarefa.
+* Excluir tarefa.
+* Alterar status.
+* Atribuir responsáveis.
+
+**Dados da tarefa:**
+
+* Título
+* Descrição
+* Prazo (data e hora)
+* Prioridade
+* Responsáveis
+* Status
+
+#### Dashboard
+
+* Total de tarefas.
+* Em andamento.
+* Concluídas.
+* Atrasadas.
+* Próximas do vencimento.
+
+
+#### Relatórios
+
+* Entregas diárias, semanais e mensais.
+* Entregas por funcionário.
+* Tarefas atrasadas por período.
+
+#### Alertas
+
+* Tarefas vencidas.
+* Tarefas que vencem hoje.
+* Tarefas próximas do prazo.
+* Funcionários sobrecarregados.
+
+---
+
+### KPIs
+
+1. Taxa de Conclusão (%)
+* O que mostra**: Percentual de tarefas concluídas em relação ao total
+* Decisão**: Ricardo vê se o time está entregando. Exemplo: 33% significa que 1 de cada 3 tarefas foi concluída, o que ajuda a avaliar o ritmo de trabalho
+
+2. Tarefas Atrasadas
+* O que mostra**: Quantas tarefas perderam o prazo (prazo < hoje)
+* Decisão**: Ricardo identifica quantas tarefas estão atrasadas e precisa agir. Exemplo: 1 tarefa atrasada exige ação imediata do time
