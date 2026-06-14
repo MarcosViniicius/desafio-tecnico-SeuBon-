@@ -280,6 +280,17 @@ async function carregarFuncionariosParaSelect() {
     }
 }
 
+async function carregarKPIs() {
+  try {
+    const response = await fetch('/api/kpis');
+    const data = await response.json();
+    document.getElementById('kpiTaxaConclusao').textContent = data.taxaConclusao + '%';
+    document.getElementById('kpiAtrasadas').textContent = data.tarefasAtrasadas;
+  } catch (error) {
+    console.error('Erro ao carregar KPIs:', error);
+  }
+}
+
 async function toggleStatusTarefa(id, statusAtual) {
   const novoStatus = statusAtual === 'pendente' ? 'concluida' : 'pendente';
   try {
@@ -290,6 +301,7 @@ async function toggleStatusTarefa(id, statusAtual) {
     });
     if (response.ok) {
       carregarTarefas();
+      carregarKPIs();
     }
   } catch (error) {
     console.error('Erro:', error);

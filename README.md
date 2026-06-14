@@ -96,6 +96,7 @@ npm run dev
 | POST | `/api/funcionarios` | Criar novo |
 | GET | `/api/funcionarios/:id` | Detalhes de um |
 | PUT | `/api/funcionarios/:id` | Editar |
+| DELETE | `/api/funcionarios/:id` | Deletar |
 | PATCH | `/api/funcionarios/:id/status` | Atualizar status (ativo/inativo) |
 | GET | `/api/funcionarios/:id/tarefas` | Tarefas do funcionário |
 | GET | `/api/funcionarios/:id/carga` | Quantidade de tarefas atribuídas |
@@ -112,10 +113,12 @@ npm run dev
 | PUT | `/api/tarefas/:id` | Editar |
 | DELETE | `/api/tarefas/:id` | Deletar |
 | PATCH | `/api/tarefas/:id/responsavel` | Atribuir funcionário |
-| GET | `/api/tarefas/em-andamento` | Tarefas com prazo no futuro |
-| GET | `/api/tarefas/concluidas` | Tarefas com prazo expirado |
-| GET | `/api/tarefas/atrasadas` | Tarefas atrasadas |
-| GET | `/api/tarefas/proximas` | Próximas 3 dias |
+| PATCH | `/api/tarefas/:id/status` | Marcar como concluída ou pendente |
+| GET | `/api/tarefas/em-andamento` | Tarefas pendentes com prazo no futuro |
+| GET | `/api/tarefas/concluidas` | Tarefas com status concluída |
+| GET | `/api/tarefas/atrasadas` | Tarefas pendentes com prazo vencido |
+| GET | `/api/tarefas/proximas` | Tarefas pendentes com prazo nos próximos 3 dias |
+| GET | `/api/kpis` | Indicadores: taxa de conclusão e total de atrasadas |
 
 ### Exemplo de uso
 
@@ -149,8 +152,11 @@ O `public/index.html` contém:
 ## Funcionalidades Atuais
 
 - ✅ CRUD completo de funcionários e tarefas
-- ✅ 25 endpoints de API bem estruturados
-- ✅ Queries de status e análise de tarefas
+- ✅ Dados de exemplo carregados automaticamente (4 funcionários, 8 tarefas)
+- ✅ Filtros de tarefas: Em andamento, Concluídas, Atrasadas, Próximas (3 dias)
+- ✅ Botão para finalizar/reabrir tarefas diretamente na lista
+- ✅ KPIs atualizados em tempo real na tela
+- ✅ 26 endpoints de API bem estruturados
 - ✅ Frontend interativo com atualização em tempo real
 - ✅ TypeScript com tipos definidos
 - ✅ Sem frameworks complexos (Node.js nativo)

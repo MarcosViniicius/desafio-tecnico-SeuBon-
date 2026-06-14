@@ -52,22 +52,22 @@ export function contarTarefas(): number {
 }
 // * Tarefas em andamento
 export function listarTarefasEmAndamento(): Tarefa[] {
-    const stmt = db.prepare("SELECT * FROM tarefas WHERE prazoTarefa > date('now')");
+    const stmt = db.prepare("SELECT * FROM tarefas WHERE status != 'concluida' AND prazoTarefa >= date('now')");
     return stmt.all() as Tarefa[];
 }
 // * Tarefas concluídas
 export function listarTarefasConcluidas(): Tarefa[] {
-    const stmt = db.prepare("SELECT * FROM tarefas WHERE prazoTarefa <= date('now')");
+    const stmt = db.prepare("SELECT * FROM tarefas WHERE status = 'concluida'");
     return stmt.all() as Tarefa[];
 }
 // * Tarefas atrasadas
 export function listarTarefasAtrasadas(): Tarefa[] {
-    const stmt = db.prepare("SELECT * FROM tarefas WHERE prazoTarefa < date('now')");
+    const stmt = db.prepare("SELECT * FROM tarefas WHERE status != 'concluida' AND prazoTarefa < date('now')");
     return stmt.all() as Tarefa[];
 }
 // * Tarefas próximas do vencimento
 export function listarTarefasProximasVencimento(): Tarefa[] {
-    const stmt = db.prepare("SELECT * FROM tarefas WHERE prazoTarefa BETWEEN date('now') AND date('now', '+3 days')");
+    const stmt = db.prepare("SELECT * FROM tarefas WHERE status != 'concluida' AND prazoTarefa BETWEEN date('now') AND date('now', '+3 days')");
     return stmt.all() as Tarefa[];
 }
 
