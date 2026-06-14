@@ -1,0 +1,202 @@
+﻿<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestão de Atividades</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Gestão de Atividades</h1>
+
+    <!-- Form Funcionário -->
+    <div class="form-section">
+      <h2>Cadastrar Funcionário</h2>
+      <form id="formFuncionario">
+        <div class="form-group">
+          <label for="nomeFuncionario">Nome:</label>
+          <input type="text" id="nomeFuncionario" required>
+        </div>
+        <div class="form-group">
+          <label for="emailFuncionario">Email:</label>
+          <input type="email" id="emailFuncionario" required>
+        </div>
+        <button type="submit">Criar Funcionário</button>
+      </form>
+      <div id="msgFuncionario"></div>
+    </div>
+
+    <!-- Form Tarefa -->
+    <div class="form-section">
+      <h2>Cadastrar Tarefa</h2>
+      <form id="formTarefa">
+        <div class="form-group">
+          <label for="nomeTarefa">Título:</label>
+          <input type="text" id="nomeTarefa" required>
+        </div>
+        <div class="form-group">
+          <label for="descricaoTarefa">Descrição:</label>
+          <input type="text" id="descricaoTarefa" required>
+        </div>
+        <div class="form-group">
+          <label for="prazoTarefa">Prazo:</label>
+          <input type="date" id="prazoTarefa" required>
+        </div>
+        <div class="form-group">
+          <label for="prioridadeTarefa">Prioridade:</label>
+          <select id="prioridadeTarefa" required>
+            <option value="">Selecione...</option>
+            <option value="1">Baixa</option>
+            <option value="2">Média</option>
+            <option value="3">Alta</option>
+            <option value="4">Crítica</option>
+          </select>
+        </div>
+        <button type="submit">Criar Tarefa</button>
+      </form>
+      <div id="msgTarefa"></div>
+    </div>
+
+    <!-- Funcionários -->
+    <div class="form-section">
+      <h2>Funcionários</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Email</th>
+          </tr>
+        </thead>
+        <tbody id="corpoFuncionarios">
+          <tr><td colspan="2">Carregando...</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Tarefas -->
+    <div class="form-section">
+      <h2>Tarefas</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Título</th>
+            <th>Descrição</th>
+            <th>Prazo</th>
+            <th>Prioridade</th>
+          </tr>
+        </thead>
+        <tbody id="corpoTarefas">
+          <tr><td colspan="4">Carregando...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    async function carregarFuncionarios() {
+      try {
+        const response = await fetch('/api/funcionarios');
+        const funcionarios = await response.json();
+        const tbody = document.getElementById('corpoFuncionarios');
+        
+        if (funcionarios.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="2">Nenhum funcionário</td></tr>';
+          return;
+        }
+
+        tbody.innerHTML = funcionarios.map(f => `
+          <tr>
+            <td>${f.nome}</td>
+            <td>${f.email}</td>
+          </tr>
+        `).join('');
+      } catch (error) {
+        console.error('Erro:', error);
+      }
+    }
+
+    async function carregarTarefas() {
+      try {
+        const response = await fetch('/api/tarefas');
+        const tarefas = await response.json();
+        const tbody = document.getElementById('corpoTarefas');
+        
+        if (tarefas.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="4">Nenhuma tarefa</td></tr>';
+          return;
+        }
+
+        const prioridadeMap = { 1: 'Baixa', 2: 'Média', 3: 'Alta', 4: 'Crítica' };
+        tbody.innerHTML = tarefas.map(t => `
+          <tr>
+            <td>${t.nomeTarefa}</td>
+            <td>${t.descricaoTarefa}</td>
+            <td>${t.prazoTarefa}</td>
+            <td>${prioridadeMap[t.prioridadeTarefa] || 'N/A'}</td>
+          </tr>
+        `).join('');
+      } catch (error) {
+        console.error('Erro:', error);
+      }
+    }
+
+    document.getElementById('formFuncionario').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const nome = document.getElementById('nomeFuncionario').value;
+      const email = document.getElementById('emailFuncionario').value;
+      const msgDiv = document.getElementById('msgFuncionario');
+
+      try {
+        const response = await fetch('/api/funcionarios', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ nome, email })
+        });
+
+        if (response.ok) {
+          msgDiv.innerHTML = '<p class="success">Funcionário criado!</p>';
+          document.getElementById('formFuncionario').reset();
+          carregarFuncionarios();
+          setTimeout(() => msgDiv.innerHTML = '', 3000);
+        } else {
+          msgDiv.innerHTML = '<p class="error">Erro ao criar funcionário</p>';
+        }
+      } catch (error) {
+        msgDiv.innerHTML = '<p class="error">Erro ao criar funcionário</p>';
+      }
+    });
+
+    document.getElementById('formTarefa').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const nomeTarefa = document.getElementById('nomeTarefa').value;
+      const descricaoTarefa = document.getElementById('descricaoTarefa').value;
+      const prazoTarefa = document.getElementById('prazoTarefa').value;
+      const prioridadeTarefa = parseInt(document.getElementById('prioridadeTarefa').value);
+      const msgDiv = document.getElementById('msgTarefa');
+
+      try {
+        const response = await fetch('/api/tarefas', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ nomeTarefa, descricaoTarefa, prazoTarefa, prioridadeTarefa })
+        });
+
+        if (response.ok) {
+          msgDiv.innerHTML = '<p class="success">Tarefa criada!</p>';
+          document.getElementById('formTarefa').reset();
+          carregarTarefas();
+          setTimeout(() => msgDiv.innerHTML = '', 3000);
+        } else {
+          msgDiv.innerHTML = '<p class="error">Erro ao criar tarefa</p>';
+        }
+      } catch (error) {
+        msgDiv.innerHTML = '<p class="error">Erro ao criar tarefa</p>';
+      }
+    });
+
+    carregarFuncionarios();
+    carregarTarefas();
+  </script>
+</body>
+</html>
