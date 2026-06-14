@@ -47,13 +47,13 @@ export function listarCargaFuncionario(funcionario_id: number): number {
 
 // * Tarefas vencidas
 export function tarefasVencidasFuncionario(funcionario_id: number): Tarefa[] {
-    const stmt = db.prepare('SELECT * FROM tarefas WHERE funcionario_id = ? AND prazoTarefa < date("now")');
+    const stmt = db.prepare("SELECT * FROM tarefas WHERE funcionario_id = ? AND prazoTarefa < date('now')");
     return stmt.all(funcionario_id) as Tarefa[];
 }
 
 // * Tarefas que vencem hoje
 export function tarefasQueVencemHojeFuncionario(funcionario_id: number): Tarefa[] {
-    const stmt = db.prepare('SELECT * FROM tarefas WHERE funcionario_id = ? AND prazoTarefa = date("now")');
+    const stmt = db.prepare("SELECT * FROM tarefas WHERE funcionario_id = ? AND prazoTarefa = date('now')");
     return stmt.all(funcionario_id) as Tarefa[];
 }
 
