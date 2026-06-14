@@ -2,6 +2,7 @@ import Database from 'better-sqlite3';
 
 const db = new Database('database.db');
 
+// * Criar tabelas funcionarios e tarefas
 db.exec(`
   CREATE TABLE IF NOT EXISTS funcionarios (
     funcionario_id INTEGER PRIMARY KEY AUTOINCREMENT,

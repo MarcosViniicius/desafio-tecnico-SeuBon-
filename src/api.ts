@@ -9,6 +9,7 @@ import {
   listarCargaFuncionario,
   tarefasVencidasFuncionario,
   tarefasQueVencemHojeFuncionario,
+  deletarFuncionario,
 } from './database/funcionarios.js';
 import {
   listarTarefas,
@@ -47,6 +48,11 @@ const routes: Record<string, Handler> = {
   'PUT /api/funcionarios/:id': (body, params) => {
     const { nome, email } = JSON.parse(body);
     editarFuncionario(parseInt(params.id || '', 10), nome, email);
+    return { status: 200, data: { success: true } };
+  },
+
+  'DELETE /api/funcionarios/:id': (_, params) => {
+    deletarFuncionario(parseInt(params.id || '', 10));
     return { status: 200, data: { success: true } };
   },
 
@@ -155,7 +161,7 @@ function parseRoute(pathname: string): { route: string; params: Record<string, s
       }
     }
 
-    if (match) return { route, params };
+    if (match) return { route: pathPart, params };
   }
 
   return { route: '', params: {} };

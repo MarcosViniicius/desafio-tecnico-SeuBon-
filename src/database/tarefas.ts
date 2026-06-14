@@ -2,37 +2,43 @@ import db from './db.js';
 import type { Tarefa } from './types.js';
 
 
-
+// * Criar tarefa
 export function criarTarefa(nomeTarefa: string, descricaoTarefa: string, prazoTarefa: string, prioridadeTarefa: number, funcionario_id: number | null): void {
   const stmt = db.prepare('INSERT OR IGNORE INTO tarefas (nomeTarefa, descricaoTarefa, prazoTarefa, prioridadeTarefa, funcionario_id) VALUES (?, ?, ?, ?, ?)');
   stmt.run(nomeTarefa, descricaoTarefa, prazoTarefa, prioridadeTarefa, funcionario_id);
 }
 
+// * Editar tarefa
 export function editarTarefa(id: number, nomeTarefa: string, descricaoTarefa: string, prazoTarefa: string, prioridadeTarefa: number, funcionario_id: number | null): void {
     const stmt = db.prepare('UPDATE tarefas SET nomeTarefa = ?, descricaoTarefa = ?, prazoTarefa = ?, prioridadeTarefa = ?, funcionario_id = ? WHERE tarefa_id = ?');
     stmt.run(nomeTarefa, descricaoTarefa, prazoTarefa, prioridadeTarefa, funcionario_id, id);
 }
 
+// * Deletar tarefa
 export function deletarTarefa(id: number): void {
     const stmt = db.prepare('DELETE FROM tarefas WHERE tarefa_id = ?');
     stmt.run(id);
 }
 
+// * Atribuir ou remover responsável
 export function atribuirResponsavel(id: number, funcionario_id: number | null): void {
     const stmt = db.prepare('UPDATE tarefas SET funcionario_id = ? WHERE tarefa_id = ?');
     stmt.run(funcionario_id, id);
 }
 
+// * Listar tarefas por funcionário
 export function listarTarefasPorFuncionario(funcionario_id: number): Tarefa[] {
     const stmt = db.prepare('SELECT * FROM tarefas WHERE funcionario_id = ?');
     return stmt.all(funcionario_id) as Tarefa[];
 }
 
+// * Listar todas as tarefas
 export function listarTarefas(): Tarefa[] {
   const stmt = db.prepare('SELECT * FROM tarefas');
   return stmt.all() as Tarefa[];
 }
 
+// * Buscar tarefa por ID
 export function buscarTarefaPorId(id: number): Tarefa | undefined {
   const stmt = db.prepare('SELECT * FROM tarefas WHERE tarefa_id = ?');
   return stmt.get(id) as Tarefa | undefined;
