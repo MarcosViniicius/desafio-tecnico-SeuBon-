@@ -94,6 +94,26 @@ const routes: Record<string, Handler> = {
     return { status: 201, data: { success: true } };
   },
 
+  'GET /api/tarefas/em-andamento': () => ({
+    status: 200,
+    data: listarTarefasEmAndamento(),
+  }),
+
+  'GET /api/tarefas/concluidas': () => ({
+    status: 200,
+    data: listarTarefasConcluidas(),
+  }),
+
+  'GET /api/tarefas/atrasadas': () => ({
+    status: 200,
+    data: listarTarefasAtrasadas(),
+  }),
+
+  'GET /api/tarefas/proximas': () => ({
+    status: 200,
+    data: listarTarefasProximasVencimento(),
+  }),
+
   'GET /api/tarefas/:id': (_, params) => {
     const tarefa = buscarTarefaPorId(parseInt(params.id || '', 10));
     if (!tarefa) return { status: 404, data: { error: 'Tarefa não encontrada' } };
@@ -116,26 +136,6 @@ const routes: Record<string, Handler> = {
     atribuirResponsavel(parseInt(params.id || '', 10), funcionario_id || null);
     return { status: 200, data: { success: true } };
   },
-
-  'GET /api/tarefas/em-andamento': () => ({
-    status: 200,
-    data: listarTarefasEmAndamento(),
-  }),
-
-  'GET /api/tarefas/concluidas': () => ({
-    status: 200,
-    data: listarTarefasConcluidas(),
-  }),
-
-  'GET /api/tarefas/atrasadas': () => ({
-    status: 200,
-    data: listarTarefasAtrasadas(),
-  }),
-
-  'GET /api/tarefas/proximas': () => ({
-    status: 200,
-    data: listarTarefasProximasVencimento(),
-  }),
 };
 
 function parseRoute(pathname: string): { route: string; params: Record<string, string> } {

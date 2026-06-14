@@ -62,7 +62,7 @@ export function listarTarefasConcluidas(): Tarefa[] {
 }
 // * Tarefas atrasadas
 export function listarTarefasAtrasadas(): Tarefa[] {
-    const stmt = db.prepare('SELECT * FROM tarefas WHERE prazoTarefa < date("now") AND prioridadeTarefa < 3');
+    const stmt = db.prepare('SELECT * FROM tarefas WHERE prazoTarefa < date("now")');
     return stmt.all() as Tarefa[];
 }
 // * Tarefas próximas do vencimento
