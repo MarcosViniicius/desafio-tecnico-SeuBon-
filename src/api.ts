@@ -136,6 +136,27 @@ const routes: Record<string, Handler> = {
     atribuirResponsavel(parseInt(params.id || '', 10), funcionario_id || null);
     return { status: 200, data: { success: true } };
   },
+
+  // KPIs
+  'GET /api/kpis': () => {
+    const todasTarefas = listarTarefas();
+    const tarefasConcluidas = listarTarefasConcluidas();
+    const tarefasAtrasadas = listarTarefasAtrasadas();
+
+    const taxaConclusao = todasTarefas.length > 0
+      ? Math.round((tarefasConcluidas.length / todasTarefas.length) * 100)
+      : 0;
+
+    return {
+      status: 200,
+      data: {
+        taxaConclusao,
+        tarefasAtrasadas: tarefasAtrasadas.length,
+        totalTarefas: todasTarefas.length,
+        tarefasEmAndamento: todasTarefas.length - tarefasConcluidas.length,
+      }
+    };
+  },
 };
 
 function parseRoute(pathname: string): { route: string; params: Record<string, string> } {

@@ -10,6 +10,23 @@
   <div class="container">
     <h1>Gestão de Atividades</h1>
 
+    <!-- KPIs -->
+    <div class="kpis-section">
+      <h2>Indicadores</h2>
+      <div class="kpis-grid">
+        <div class="kpi-card">
+          <div class="kpi-label">Taxa de Conclusão</div>
+          <div class="kpi-value" id="kpiTaxaConclusao">0%</div>
+          <div class="kpi-description">Percentual de tarefas concluídas</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Tarefas Atrasadas</div>
+          <div class="kpi-value" id="kpiAtrasadas">0</div>
+          <div class="kpi-description">Quantas tarefas passaram do prazo</div>
+        </div>
+      </div>
+    </div>
+
     <!-- Form Funcionário -->
     <div class="form-section">
       <h2>Cadastrar Funcionário</h2>
@@ -169,8 +186,6 @@
     </div>
   </div>
 
-  
-
-<script src="./script.js"></script>
+  <script src="./script.js"></script>
 </body>
 </html>

@@ -159,49 +159,36 @@ O `public/index.html` contém:
 
 Cada KPI responde a uma decisão que Ricardo precisa tomar:
 
-### 1. **Tarefas atrasadas**
-- **O que mostra**: Quantas tarefas perderam o prazo
-- **Decisão**: Ricardo identifica gargalos e prioriza ações corretivas
+### 1. **Taxa de Conclusão (%)**
+- **O que mostra**: Percentual de tarefas concluídas em relação ao total
+- **Decisão**: Ricardo vê se o time está entregando. Exemplo: 33% significa que 1 de cada 3 tarefas foi concluída, o que ajuda a avaliar o ritmo de trabalho
 
-### 2. **Entregas na semana**
-- **O que mostra**: Volume de tarefas concluídas recentemente
-- **Decisão**: Avaliar produtividade do time e ritmo de entrega
-
-### 3. **Taxa de cumprimento de prazo**
-- **O que mostra**: Percentual de tarefas concluídas dentro do prazo
-- **Decisão**: Avaliar confiabilidade das entregas para clientes
-
-### 4. **Distribuição de carga**
-- **O que mostra**: Quantas tarefas cada funcionário tem atribuído
-- **Decisão**: Redistribuir trabalho e evitar sobrecarga
-
-### 5. **Tempo médio de conclusão**
-- **O que mostra**: Quanto tempo leva para completar uma tarefa
-- **Decisão**: Identificar processos lentos e oportunidades de melhoria
+### 2. **Tarefas Atrasadas**
+- **O que mostra**: Quantas tarefas perderam o prazo (prazo < hoje)
+- **Decisão**: Ricardo identifica quantas tarefas estão atrasadas e precisa agir. Exemplo: 1 tarefa atrasada exige ação imediata do time
 
 ## O que foi cortado para o prazo
 
-- Dashboard visual com gráficos
-- Relatórios analíticos (diário/semanal/mensal)
-- Autenticação de usuários
-- Seção "Riscos da Semana"
-- UI responsiva e design avançado
-- Múltiplas atribuições por tarefa
-- Histórico de mudanças de status
-- Notificações
+- **Dashboard com gráficos visuais** — Os KPIs aparecem em cards simples, mas não há gráficos (pizza, barras, etc)
+- **Mais KPIs** — Escolhemos os 2 mais críticos (taxa de conclusão e atrasadas), mas não implementamos distribuição de carga, tempo médio, etc
+- **Relatórios analíticos** — Sem relatórios por período, apenas visualização atual dos dados
+- **Autenticação** — Sem login, qualquer pessoa acessa (OK para MVP, mas falta segurança)
+- **Histórico completo** — Não rastreia quando tarefas mudam de status
+- **Notificações proativas** — Sem alertas automáticos quando tarefas ficam atrasadas
+- **UI responsiva** — Funciona, mas design é básico e não é otimizado para mobile
 
 ## O que faria com mais tempo
 
-1. **Dashboard Gerencial** — cards com os 5 KPIs em tempo real
-2. **Relatórios Analíticos** — gráficos de dados por período
-3. **Seção "Riscos da Semana"** — alertas automáticos
-4. **UI Profissional** — design responsivo e polido
-5. **Múltiplas atribuições** — uma tarefa com vários responsáveis
-6. **Autenticação** — apenas Ricardo pode editar
-7. **Histórico** — rastrear mudanças de status
-8. **Notificações** — alertar colaboradores
-9. **Export** — gerar relatórios em PDF/Excel
-10. **Filtros avançados** — buscar por status, prioridade, etc
+1. **Dashboard com gráficos interativos** — Gráfico de pizza mostrando distribuição de tarefas por status, gráfico de barras com carga por funcionário
+2. **Mais KPIs acionáveis** — Adicionar "Distribuição de carga" (quantas tarefas cada um tem), "Tempo médio de conclusão", "Taxa de cumprimento de prazo"
+3. **Alertas automáticos** — Notificar quando uma tarefa fica atrasada ou quando alguém fica com sobrecarga
+4. **Autenticação e permissões** — Login para Ricardo, visibilidade restrita do time, apenas Ricardo vê números sensíveis
+5. **Histórico de mudanças** — Ver quando/quem mudou status, responsável, prazo
+6. **Relatórios em PDF/Excel** — Exportar KPIs e listas de tarefas para compartilhar
+7. **UI responsiva e design profissional** — Mobile-friendly, tema customizável
+8. **Status granular de tarefas** — Não só "concluído/não-concluído", mas "Backlog → Em andamento → Review → Pronto → Concluído"
+9. **Múltiplas atribuições** — Uma tarefa pode ter vários responsáveis com diferentes papéis
+10. **Integração com calendário** — Visualizar tarefas em calendário, detectar gargalos visuais
 
 ## Scripts
 
